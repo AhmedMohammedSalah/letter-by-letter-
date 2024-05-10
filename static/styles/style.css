@@ -1,0 +1,18 @@
+/* Define @font-face rule for Almarai font */
+@font-face {
+    font-family: 'Almarai';
+    src: url('/static/fonts/Almarai/Almarai-Regular.ttf') format('truetype');
+    /* Add additional font weights and styles if needed */
+}
+
+/* Apply styles to all elements */
+* {
+    box-sizing: border-box;
+    
+    /* Use Almarai font as primary, fallback to Arial, then sans-serif */
+}
+body{
+    font-size: 14px;
+    font-family: 'Almarai', Arial, sans-serif;
+    direction: rtl;
+}

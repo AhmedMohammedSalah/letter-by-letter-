@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <!-- Side Navigation -->
+        <div class="col-md-3 col-lg-2 d-md-block sidebar">
+            <div class="user-profile mb-4">
+                <img src="/media/{{ request.user.image }}" alt="User Image" />
+                <div>
+                    <h4>{{ request.user.fname }}</h4>
+                    <p>العمر: 30 سنة</p>
+                </div>
+            </div>
+
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">
+                        <i class="ri-user-fill me-2"></i>
+                        {{ request.user.fname }}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'lessons:reading' %}">
+                        <i class="ri-book-3-fill me-2"></i>
+                        القراءة
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'lessons:writting' %}">
+                        <i class="ri-pencil-fill me-2"></i>
+                        الكتابة
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'lessons:listening' %}">
+                        <i class="ri-headphone-fill me-2"></i>
+                        الاستماع
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="ri-gamepad-fill me-2"></i>
+                        الألعاب
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="ri-chat-3-fill me-2"></i>
+                        الشات الجماعي
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-9 col-lg-10">
+            <div class="user-profile p-4 bg-white shadow rounded">
+                <h1>دروس القراءة</h1>
+                <ul>
+                    {% for lesson in lessons %}
+                        <li>
+                            <a href="#">
+                                {{ lesson.title }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,253 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>حرف بحرف</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="{% static 'styles/bootstrap/bootstrap.min.css' %}"
+      rel="stylesheet"
+    />
+    <link href="{% static 'styles/style.css' %}" rel="stylesheet" />
+
+    <link rel="icon" type="image/png" href="{% static 'imgs/logo.webp' %}" />
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f8f9fa;
+      }
+
+      .sidebar {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .sidebar .nav-link {
+        color: #343a40;
+        font-weight: 500;
+      }
+
+      .sidebar .nav-link:hover {
+        background-color: #e9ecef;
+        color: #007bff;
+      }
+
+      .sidebar .active {
+        font-weight: 700;
+        color: #007bff;
+      }
+
+      .user-profile {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .user-profile img {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 20px;
+      }
+
+      .progress {
+        height: 20px;
+        margin-bottom: 10px;
+      }
+    </style>
+    {% block head %}
+    
+    {% endblock head %}
+  </head>
+
+  <body>
+    <nav class="navbar navbar-light navbar-expand-md sticky-top bg-white py-3">
+      <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="#"
+          ><img src="{% static 'imgs/logo.webp' %}" height="65"
+        /></a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navcol-3"
+        >
+          <span class="visually-hidden">Toggle navigation</span>
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        {% if user.is_authenticated %}
+        <!-- Display logout button -->
+        <a
+          class="btn btn-secondary text-bg-secondary"
+          role="button"
+          href="{% url 'accounts:logout' %}"
+          style="background: #049dd9; margin: 8px"
+          >تسجيل الخروج</a
+        >
+        {% else %}
+        <!-- Display login button -->
+        <a
+          class="btn btn-primary text-bg-secondary"
+          role="button"
+          href="{% url 'accounts:login' %}"
+          style="background: #049dd9; margin: 8px"
+          >تسجيل الدخول</a
+        >
+        {% endif %}
+      </div>
+    </nav>
+    
+    
+    {% block content %}
+    <div class="container-fluid mt-4">
+      <div class="row">
+        <!-- Side Navigation -->
+        <div class="col-md-3 col-lg-3 d-md-block sidebar">
+          <div class="user-profile mb-4">
+            <img src="/media/{{ request.user.image }}" alt="User Image" />
+            <div>
+              <h4>{{ request.user.fname }}</h4>
+              <p>العمر: 30 سنة</p>
+            </div>
+          </div>
+    
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link active" href="#">
+                <i class="ri-user-fill me-2"></i>
+                {{ request.user.fname }}
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <i class="ri-book-3-fill me-2"></i>
+                القراءة
+                <i class="fa fa-play play-icon"></i>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <i class="ri-pencil-fill me-2"></i>
+                الكتابة
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <i class="ri-headphone-fill me-2"></i>
+                الاستماع
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <i class="ri-gamepad-fill me-2"></i>
+                الألعاب
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <i class="ri-chat-3-fill me-2"></i>
+                الشات الجماعي
+              </a>
+            </li>
+          </ul>
+        </div>
+    <!-- Main Content -->
+    <div class="col-md-9 col-lg-8">
+      <div class="user-profile p-4 bg-white shadow rounded">
+        <!-- اسم المستخدم وسنه وصورته -->
+        <div class="d-flex align-items-center mb-4">
+          <img
+            src="/media/{{ request.user.image }}"
+            alt="User Image"
+            class="me-3"
+            style="width: 80px; height: 80px; border-radius: 50%"
+          />
+          <div>
+            <h3>{{ request.user.fname }}</h3>
+            <p>العمر: 30 سنة</p>
+          </div>
+        </div>
+
+        <!-- قسم القراءة -->
+        <hr />
+        <div class="d-flex align-items-center mb-3">
+          <i class="ri-book-line fs-3 me-2"></i>
+          <div class="flex-grow-1">
+            <div class="progress">
+              <div
+                class="progress-bar"
+                role="progressbar"
+                style="width: 60%"
+                aria-valuenow="60"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              >
+                60%
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- قسم الاستماع -->
+        <hr />
+        <div class="d-flex align-items-center mb-3">
+          <i class="ri-headphone-line fs-3 me-2"></i>
+          <div class="flex-grow-1">
+            <div class="progress">
+              <div
+                class="progress-bar"
+                role="progressbar"
+                style="width: 40%"
+                aria-valuenow="40"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              >
+                40%
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- قسم الكتابة -->
+        <hr />
+        <div class="d-flex align-items-center mb-3">
+          <i class="ri-pencil-line fs-3 me-2"></i>
+          <div class="flex-grow-1">
+            <div class="progress">
+              <div
+                class="progress-bar"
+                role="progressbar"
+                style="width: 80%"
+                aria-valuenow="80"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              >
+                80%
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+    <!-- Include Bootstrap JavaScript -->
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+  </body>
+</html>

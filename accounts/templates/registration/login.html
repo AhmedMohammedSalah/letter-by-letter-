@@ -1,0 +1,96 @@
+
+{% load static %}
+{% comment %} {% load bootstrap4 %}
+{% load crispy_forms_tags %}  {% endcomment %}
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Include your custom CSS file -->
+    <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+    <!-- Include Remixicon font -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <!-- Include Boxicons font -->
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <!-- Include Roboto font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="{% static 'styles/bootstrap/bootstrap.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css'%}">
+    <link rel="stylesheet" href="{% static 'assets/fonts/font-awesome.min.css'%}">
+    <link rel="stylesheet" href="{% static 'assets/css/Hero-Clean-images.css'%}">
+    <link rel="stylesheet" href="{% static 'assets/css/Navbar-Centered-Links-icons.css'%}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-alpha1/dist/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap/css/bootstrap.min.css'%}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.rtl.min.css'%}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.rtl.min.css" integrity="sha384-DOXMLfHhQkvFFp+rWTZwVlPVqdIhpDVYT9csOnHSgWQWPX0v5MCGtjCJbY6ERspU" crossorigin="anonymous">
+    <link rel="icon" type="image/png" href="{% static 'imgs/logo.webp' %}">
+
+    
+        <style>
+            /* Style to center the form vertically and horizontally */
+        .center-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Full viewport height */
+        }
+        /* Additional styles for form elements */
+        .log-text {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .input-field {
+            margin-bottom: 20px;
+        }
+        .reg {
+            text-align: center;
+        }
+        </style>
+        <title>تسجيل الدخول</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+</head>
+<body>
+    
+       <div class="center-container">
+        <div class="container">
+            <div class="log-text">
+        <h1><a href="#" onclick="playSound();"><i class="fas fa-play"></i></a> تسجيل الدخول </h1>
+      <!-- Define an audio element for sound playback -->
+    <audio id="loginSound">
+        <source src="{% static 'sounds/login_sound.mp3' %}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- JavaScript to handle sound playback -->
+    <script>
+        function playSound() {
+            var audio = document.getElementById("loginSound");
+            audio.play();
+        }
+    </script>        
+    </div>
+            <div class="container-2">
+                <div class="l-log">
+                     <form method="post" >
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="nid" class="form-label">أدخل الرقم القومي</label>
+                            
+                            <input type="text" name="nid" class="form-control" id="nid" placeholder="الرقم القومي" minlength="14" maxlength="14" value="{{ request.GET.nid|default_if_none:'' }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <button type="submit" class="btn btn-primary btn-block col-12">الدخول</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+</body>
+</html>
