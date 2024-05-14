@@ -127,26 +127,26 @@
     
           <ul class="nav flex-column">
             <li class="nav-item">
-              <a class="nav-link active" href="#">
+              <a class="nav-link active" href="{%url 'base'%}">
                 <i class="ri-user-fill me-2"></i>
                 {{ request.user.fname }}
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link" href="{%url 'lessons:reading'%}">
                 <i class="ri-book-3-fill me-2"></i>
                 القراءة
                 <i class="fa fa-play play-icon"></i>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link" href="{%url 'lessons:writting'%}">
                 <i class="ri-pencil-fill me-2"></i>
                 الكتابة
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link" href="{%url 'lessons:listening'%}">
                 <i class="ri-headphone-fill me-2"></i>
                 الاستماع
               </a>

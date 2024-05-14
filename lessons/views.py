@@ -18,14 +18,14 @@ def reading_lessons(request):
 
 @login_required
 def listening_lessons(request):
-    listening_lessons = Lesson.objects.filter(lesson_type='استماع')
+    listening_lessons = Lesson.objects.filter(lesson_type='listening')
     context = {'lessons': listening_lessons}
     return render(request, 'lessons/listening_lessons.html', context)
 @login_required
 def writing_lessons(request):
-    listening_lessons = Lesson.objects.filter(lesson_type='كتابة')
+    writing_lessons = Lesson.objects.filter(lesson_type='writing')
     context = {'lessons': writing_lessons}
-    return render(request, 'lessons/listening_lessons.html', context)
+    return render(request, 'lessons/writing_lessons.html', context)
 
 @login_required
 
@@ -44,7 +44,7 @@ def mark_lesson_completed(request, lesson_id):
     next_lesson = Lesson.objects.filter(lesson_type=lesson.lesson_type, id__gt=lesson_id).first()
     
     if next_lesson:
-        return redirect('lesson_detail', lesson_id=next_lesson.id)
+        return redirect('lessons:lesson_detail', lesson_id=next_lesson.id)
     else:
         # Redirect to a suitable page if no next lesson is found
-        return redirect('home')  # Replace 'home' with the desired URL name
+        return redirect('base')  # Replace 'home' with the desired URL name

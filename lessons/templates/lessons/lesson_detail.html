@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block head %}
-<style>
+    <style>
         /* Set the iframe to fill the width while maintaining aspect ratio */
         .embed-responsive-16by9-custom {
             position: relative;
             height: 0;
             overflow: hidden;
-            max-width: 100%; /* Set maximum width */
             padding-bottom: 56.25%; /* 16:9 aspect ratio (9/16 * 100) */
         }
         .embed-responsive-16by9-custom iframe {
@@ -33,43 +33,44 @@
             </div>
 
             <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link active" href="#">
-                        <i class="ri-user-fill me-2"></i>
-                        {{ request.user.fname }}
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'lessons:reading' %}">
-                        <i class="ri-book-3-fill me-2"></i>
-                        القراءة
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'lessons:writting' %}">
-                        <i class="ri-pencil-fill me-2"></i>
-                        الكتابة
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'lessons:listening' %}">
-                        <i class="ri-headphone-fill me-2"></i>
-                        الاستماع
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="ri-gamepad-fill me-2"></i>
-                        الألعاب
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="ri-chat-3-fill me-2"></i>
-                        الشات الجماعي
-                    </a>
-                </li>
-            </ul>
+            <li class="nav-item">
+              <a class="nav-link active" href="{%url 'base'%}">
+                <i class="ri-user-fill me-2"></i>
+                {{ request.user.fname }}
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{%url 'lessons:reading'%}">
+                <i class="ri-book-3-fill me-2"></i>
+                القراءة
+                <i class="fa fa-play play-icon"></i>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{%url 'lessons:writting'%}">
+                <i class="ri-pencil-fill me-2"></i>
+                الكتابة
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{%url 'lessons:listening'%}">
+                <i class="ri-headphone-fill me-2"></i>
+                الاستماع
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <i class="ri-gamepad-fill me-2"></i>
+                الألعاب
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <i class="ri-chat-3-fill me-2"></i>
+                الشات الجماعي
+              </a>
+            </li>
+          </ul>
         </div>
 
         <!-- Main Content -->
@@ -77,12 +78,13 @@
             <div class="user-profile p-4 bg-white shadow rounded">
                 <h1>{{ lesson.title }}</h1>
                 <div>
-                        
-                <!-- Responsive embedding for Google Drive video -->
-                <div class="embed-responsive embed-responsive-16by9 embed-responsive-16by9-custom">
-                    <iframe class="embed-responsive-item" src="{{ lesson.video_link }}" allowfullscreen></iframe>
+                <!-- Responsive embedding for video -->
+                <div class="embed-responsive embed-responsive-16by9-custom">
+                    <video  width="100%" class="embed-responsive-item" controls>
+                        <source src="/media/{{ lesson.video_link }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
                 </div>
-
                     <!-- Add more details about the lesson as needed -->
                 </div>
         
