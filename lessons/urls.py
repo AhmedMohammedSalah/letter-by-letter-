@@ -6,6 +6,7 @@ urlpatterns = [
     path('listening/', listening_lessons, name='listening'),
     path('reading/', reading_lessons, name='reading'), 
     path('lesson/<int:lesson_id>/', lesson_detail, name='lesson_detail'), 
-    path('lesson/<int:lesson_id>/mark_completed/', mark_lesson_completed, name='mark_completed'),
+    path('lesson/<int:lesson_id>/mark_completed/', mark_lesson_completed, name='mark_completed'),  
+
 
 ]

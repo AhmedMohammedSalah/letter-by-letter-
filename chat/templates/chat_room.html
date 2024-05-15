@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<style>
+    .container {
+        margin-top: 20px;
+        display: flex;
+    }
+
+    .sidebar {
+        width: 25%;
+        margin-right: 20px;
+    }
+
+    .chat-container {
+        width: 75%;
+    }
+
+    .messages {
+        border: 1px solid #ddd;
+        padding: 10px;
+        height: 400px;
+        overflow-y: scroll;
+        margin-bottom: 20px;
+        background-color: #f9f9f9;
+        border-radius: 5px;
+    }
+
+    .message {
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 5px;
+        background-color: #f0f0f0;
+        position: relative;
+    }
+
+    .self-message {
+        text-align: right;
+        background-color: #d4edda;
+    }
+
+    .sender-info {
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    .menu {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        cursor: pointer;
+    }
+
+    .delete-button {
+        display: none;
+        margin-top: 5px;
+    }
+
+    .message:hover .delete-button {
+        display: inline-block;
+    }
+
+    .chat-input {
+        display: flex;
+        gap: 10px;
+    }
+
+    #message-content {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .btn-primary {
+        padding: 10px 20px;
+    }
+
+</style>
+{% endblock head %}
+
+{% block content %}
+<div class="container">
+    <div class="sidebar">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link active" href="{% url 'base' %}">
+                <i class="ri-user-fill me-2"></i>
+                {{ request.user.fname }}
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'lessons:reading' %}">
+                <i class="ri-book-3-fill me-2"></i>
+                القراءة
+                <i class="fa fa-play play-icon"></i>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'lessons:writting' %}">
+                <i class="ri-pencil-fill me-2"></i>
+                الكتابة
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'lessons:listening' %}">
+                <i class="ri-headphone-fill me-2"></i>
+                الاستماع
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <i class="ri-gamepad-fill me-2"></i>
+                الألعاب
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'chat:chat_room' %}">
+                <i class="ri-chat-3-fill me-2"></i>
+                الشات الجماعي
+              </a>
+            </li>
+          </ul>
+    </div>
+
+    <div class="chat-container">
+        <h1>شات جماعي</h1>
+        <div class="messages" id="message-container">
+            {% for message in messages %}
+                <div class="message {% if request.user == message.user %}self-message{% endif %}">
+                    {% if request.user != message.user %}
+                        <div class="sender-info">
+                            <span>{{ message.user.fname }}</span>
+                        </div>
+                    {% endif %}
+                    <p>{{ message.content }}</p>
+                    {% if request.user.is_staff or request.user == message.user %}
+                        <div class="menu" onclick="toggleDeleteButton(this)">
+                            &#x2022;&#x2022;&#x2022;
+                        </div>
+                        <a href="{% url 'chat:delete_message' message.id %}" class="btn btn-sm btn-danger delete-button">حذف</a>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+        <form id="message-form" class="chat-input" method="post" action="{% url 'chat:send_message' %}">
+            {% csrf_token %}
+            <textarea name="content" id="message-content" placeholder="اكتب رسالتك هنا..." rows="3"></textarea>
+            <button type="submit" class="btn btn-primary">إرسال</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function fetchMessages() {
+        fetch('{% url 'chat:fetch_messages' %}')
+        .then(response => response.json())
+        .then(data => {
+            const messageContainer = document.getElementById('message-container');
+            messageContainer.innerHTML = '';
+            data.messages.forEach(message => {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message';
+                if (message.user === '{{ request.user.username }}') {
+                    messageDiv.classList.add('self-message');
+                }
+                if (message.user !== '{{ request.user.username }}') {
+                    const senderInfo = document.createElement('div');
+                    senderInfo.className = 'sender-info';
+                    senderInfo.innerHTML = `<span>${message.fname}</span>`;
+                    messageDiv.appendChild(senderInfo);
+                }
+                const messageContent = document.createElement('p');
+                messageContent.innerHTML = message.content;
+                messageDiv.appendChild(messageContent);
+
+                if ({{ request.user.is_staff|yesno:"true,false" }} || message.user === '{{ request.user.username }}') {
+                    const menu = document.createElement('div');
+                    menu.className = 'menu';
+                    menu.innerHTML = '&#x2022;&#x2022;&#x2022;';
+                    menu.onclick = function() { toggleDeleteButton(this) };
+                    messageDiv.appendChild(menu);
+
+                    const deleteLink = document.createElement('a');
+                    deleteLink.href = `/chat/delete_message/${message.id}/`;
+                    deleteLink.className = 'btn btn-sm btn-danger delete-button';
+                    deleteLink.innerHTML = 'حذف';
+                    messageDiv.appendChild(deleteLink);
+                }
+                messageContainer.appendChild(messageDiv);
+            });
+        });
+    }
+
+    function toggleDeleteButton(element) {
+        const deleteButton = element.nextElementSibling;
+        if (deleteButton.style.display === 'inline-block') {
+            deleteButton.style.display = 'none';
+        } else {
+            deleteButton.style.display = 'inline-block';
+        }
+    }
+
+    setInterval(fetchMessages, 5000);
+
+    document.getElementById('message-form').addEventListener('submit', function(event) {
+        const messageContent = document.getElementById('message-content').value.trim();
+        if (!messageContent) {
+            event.preventDefault();
+            alert('يرجى إدخال نص الرسالة.');
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', fetchMessages);
+</script>
+{% endblock content %}
