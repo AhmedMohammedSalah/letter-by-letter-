@@ -183,7 +183,7 @@
                     messageDiv.appendChild(menu);
 
                     const deleteLink = document.createElement('a');
-                    deleteLink.href = `/chat/delete_message/${message.id}/`;
+                    deleteLink.href = `/chat/delete/${message.id}/`;
                     deleteLink.className = 'btn btn-sm btn-danger delete-button';
                     deleteLink.innerHTML = 'حذف';
                     messageDiv.appendChild(deleteLink);
