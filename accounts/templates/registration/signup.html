@@ -49,6 +49,18 @@
         <div class="row justify-content-center">
             <div class="col-lg-6 col-md-8">
                 <h2 class="text-center mb-4"> <a href="#" onclick="playSound();"><i class="fas fa-play"></i></a>&nbsp;تسجيل جديد</h2>
+                <audio id="loginSound">
+                    <source src="{% static 'audios/register.mp3' %}" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+
+                <!-- JavaScript to handle sound playback -->
+                <script>
+                    function playSound() {
+                        var audio = document.getElementById("loginSound");
+                        audio.play();
+                    }
+                </script>  
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                 {% for field in form %}
