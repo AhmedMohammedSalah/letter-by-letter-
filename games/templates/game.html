@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+<style>
+    .page-container {
+        display: flex;
+    }
+    .sidebar {
+        width: 20%;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-right: 1px solid #ddd;
+    }
+    .game-container-wrapper {
+        width: 80%;
+        padding: 20px;
+    }
+    .game-container {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+    .words, .images {
+        width: 45%;
+    }
+    .word, .image-container {
+        margin: 10px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: center;
+    }
+    .image {
+        max-width: 100%;
+        height: auto;
+    }
+    .correct {
+        background-color: #d4edda;
+    }
+    .incorrect {
+        background-color: #f8d7da;
+    }
+</style>
+{% endblock head %}
+{% block content %}
+<div class="page-container">
+    <!-- Side Navigation -->
+    <div class="sidebar">
+        <div class="user-profile mb-4">
+            <img src="/media/{{ request.user.image }}" alt="User Image" class="img-fluid" />
+            <div>
+                <h4>{{ request.user.fname }}</h4>
+                <p>العمر: 30 سنة</p>
+            </div>
+        </div>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" href="{% url 'base' %}">
+                    <i class="ri-user-fill me-2"></i>
+                    {{ request.user.fname }}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'lessons:reading' %}">
+                    <i class="ri-book-3-fill me-2"></i>
+                    القراءة
+                    <i class="fa fa-play play-icon"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'lessons:writting' %}">
+                    <i class="ri-pencil-fill me-2"></i>
+                    الكتابة
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'lessons:listening' %}">
+                    <i class="ri-headphone-fill me-2"></i>
+                    الاستماع
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="ri-gamepad-fill me-2"></i>
+                    الألعاب
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'chat:chat_room' %}">
+                    <i class="ri-chat-3-fill me-2"></i>
+                    الشات الجماعي
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Game Container -->
+    <div class="game-container-wrapper">
+        <h1>لعبة التوصيل بين الكلمة وصورتها</h1>
+        <div class="game-container">
+            <div class="words">
+                {% for pair in pairs %}
+                    <div class="word" draggable="true" ondragstart="drag(event)" id="word-{{ pair.id }}" data-pair-id="{{ pair.id }}">
+                        {{ pair.word }}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="images">
+                {% for pair in pairs %}
+                    <div class="image-container" ondrop="drop(event)" ondragover="allowDrop(event)" data-pair-id="{{ pair.id }}">
+                        <img src="{{ pair.image.url }}" alt="{{ pair.word }}" class="image" id="image-{{ pair.id }}">
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function allowDrop(event) {
+        event.preventDefault();
+    }
+
+    function drag(event) {
+        event.dataTransfer.setData("text", event.target.id);
+    }
+
+    function drop(event) {
+        event.preventDefault();
+        var data = event.dataTransfer.getData("text");
+        var wordElement = document.getElementById(data);
+        var imageContainer = event.target.closest('.image-container');
+        var wordPairId = wordElement.getAttribute('data-pair-id');
+        var imagePairId = imageContainer.getAttribute('data-pair-id');
+
+        if (wordPairId === imagePairId) {
+            imageContainer.appendChild(wordElement);
+            wordElement.classList.add('correct');
+            wordElement.classList.remove('incorrect');
+        } else {
+            wordElement.classList.add('incorrect');
+            wordElement.classList.remove('correct');
+        }
+    }
+</script>
+{% endblock %}
